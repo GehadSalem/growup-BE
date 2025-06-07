@@ -1,21 +1,22 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import ExpenseController from '../controller/expense.controller';
-import AuthController from '../controller/auth.controller';
-import HabitController from '../controller/habit.controller';
-import EmergencyController from '../controller/emergency.controller';
-import NotificationController from '../controller/notification.controller';
-import { asyncHandler } from '../middlewares/error.middleware';
-import protectedRouter from '../utils/protectedRouter';
-import { CustomInstallmentPlanController } from '../controller/customPlanInstallment.controller';
-import { getReferrals } from '../controller/referral.controller'; 
-import { getCurrency } from '../middlewares/getCurrency';
-import DailyTaskController from '../controller/dailyTask.controller';
-import SavingsGoalController from '../controller/savingsGoal.controller';
-import MajorGoalController from '../controller/majorGoals.controller';
-import { InstallmentController } from '../controller/installment.controller';
-import UserController from '../controller/user.controller';
+
+import { Request, Response, Router } from 'express';
 import { IncomeController } from '../controller/income.controller';
 import { authenticate } from '../middlewares/auth.middleware';
+import { getCurrency } from 'middlewares/getCurrency';
+import { asyncHandler } from 'middlewares/error.middleware';
+import AuthController from 'controller/auth.controller';
+import protectedRouter from 'utils/protectedRouter';
+import UserController from 'controller/user.controller';
+import ExpenseController from 'controller/expense.controller';
+import HabitController from 'controller/habit.controller';
+import EmergencyController from 'controller/emergency.controller';
+import NotificationController from 'controller/notification.controller';
+import DailyTaskController from 'controller/dailyTask.controller';
+import SavingsGoalController from 'controller/savingsGoal.controller';
+import MajorGoalController from 'controller/majorGoals.controller';
+import { InstallmentController } from 'controller/installment.controller';
+import { CustomInstallmentPlanController } from 'controller/customPlanInstallment.controller';
+import { getReferrals } from 'controller/referral.controller';
 const publicRouter = Router();
 
 /* ---------------------- Public Routes ---------------------- */
