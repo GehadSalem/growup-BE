@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { publicRouter, protectedRouter } from '../src/routes/index';
 import { AppDataSource } from '../src/dbConfig/data-source';
-import { globalErrorHandling } from '../src/Middlewares/error.middleware';
-import { authenticate } from '../src/Middlewares/auth.middleware';
+import { globalErrorHandling } from '../src/middlewares/error.middleware';
+import { authenticate } from '../src/middlewares/auth.middleware';
 
 dotenv.config();
 
