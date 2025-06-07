@@ -4,55 +4,68 @@ import ExpenseController from '../Controller/expense.controller';
 import AuthController from '../Controller/auth.controller';
 import HabitController from '../Controller/habit.controller';
 import EmergencyController from '../Controller/emergency.controller';
-import { IncomeController } from '../Controller/Income.controller';
-import { InstallmentController } from '../Controller/Installmen.controller';
 import NotificationController from '../Controller/notification.controller';
 import { asyncHandler } from '../Middlewares/error.middleware';
 import protectedRouter from '../utils/protectedRouter';
+import { CustomInstallmentPlanController } from '../Controller/customPlanInstallment.controller';
+import { getReferrals } from '../Controller/referral.controller'; 
+import { getCurrency } from '../Middlewares/getCurrency';
 import DailyTaskController from '../Controller/dailyTask.controller';
 import SavingsGoalController from '../Controller/savingsGoal.controller';
-import MajorGoalController from '../Controller/majorGoal.controller';
-import { CustomInstallmentPlanController } from '../Controller/customPlanInstallment.controller';
+import MajorGoalController from '../Controller/majorGoals.controller';
+import { IncomeController } from '../Controller/income.controller';
+import { InstallmentController } from '../Controller/installment.controller';
+import UserController from '../Controller/user.controller';
+const publicRouter = Router();
 
-const router = Router();
-// Error handling wrapper
-const catchHandler = (fn: Function) => 
-  (req: Request, res: Response, next: NextFunction) => 
-    Promise.resolve(fn(req, res, next)).catch(next);
+/* ---------------------- Public Routes ---------------------- */
 
-// Authentication routes
-router.post('/register', catchHandler(AuthController.register));
-router.post('/login', catchHandler(AuthController.login));
-router.post('/google', catchHandler(AuthController.googleAuth)); // NEW Google auth route
+// Currency route
+publicRouter.get('/currency', getCurrency, (req: Request, res: Response) => {
+  res.json({ currency: (req as any).userCurrency });
+});
 
-// Expense routes
+// Authentication
+publicRouter.post('/register', asyncHandler(AuthController.register));
+publicRouter.post('/login', asyncHandler(AuthController.login));
+publicRouter.post('/google', asyncHandler(AuthController.googleAuth)); // Google auth route
+
+/* ---------------------- Protected Routes ---------------------- */
+
+// All routes below this require authentication middleware
+protectedRouter.use(asyncHandler(authenticate));
+
+//users
+protectedRouter.get('/users', asyncHandler(UserController.getAllUsers));
+
+// Expenses
 protectedRouter.post('/expenses', asyncHandler(ExpenseController.addExpense));
 protectedRouter.get('/expenses', asyncHandler(ExpenseController.getExpenses));
 protectedRouter.get('/expenses/:month/:year', asyncHandler(ExpenseController.getMonthlyReport));
 
-// Habit routes
+// Habits
 protectedRouter.post('/habits', asyncHandler(HabitController.addHabit));
 protectedRouter.get('/habits', asyncHandler(HabitController.getHabits));
 protectedRouter.patch('/habits/:id', asyncHandler(HabitController.markHabitComplete));
 
-// Emergency fund routes
+// Emergency
 protectedRouter.post('/emergency', asyncHandler(EmergencyController.addToEmergencyFund));
 protectedRouter.get('/emergency', asyncHandler(EmergencyController.getEmergencyFunds));
 
-// Notification routes   // I have a problem
+// Notifications
 protectedRouter.get('/notification', asyncHandler(NotificationController.testNotification));
 protectedRouter.patch('/notification/:id', asyncHandler(NotificationController.markNotificationRead));
-protectedRouter.delete('/notification/:id', asyncHandler(NotificationController.testNotification));
+protectedRouter.delete('/notification/:id', asyncHandler(NotificationController.testNotification)); 
 
-// Daily Task routes
+// Daily Tasks
 protectedRouter.post('/dailyTask', asyncHandler(DailyTaskController.createTask));
 protectedRouter.get('/dailyTask', asyncHandler(DailyTaskController.getTasks));
 protectedRouter.get('/dailyTask/:id', asyncHandler(DailyTaskController.getTaskById));
 protectedRouter.patch('/dailyTask/:id', asyncHandler(DailyTaskController.updateTask));
-protectedRouter.patch('/dailyTask/:id/complete', asyncHandler(DailyTaskController.markTaskComplete)); // optional, if separate
+protectedRouter.patch('/dailyTask/:id/complete', asyncHandler(DailyTaskController.markTaskComplete));
 protectedRouter.delete('/dailyTask/:id', asyncHandler(DailyTaskController.deleteTask));
 
-// Savings Goal routes
+// Savings Goals
 protectedRouter.post('/savingsGoals', asyncHandler(SavingsGoalController.createSavingsGoal));
 protectedRouter.get('/savingsGoals', asyncHandler(SavingsGoalController.getUserSavingsGoals));
 protectedRouter.get('/savingsGoals/:id', asyncHandler(SavingsGoalController.getSavingsGoalById));
@@ -60,16 +73,15 @@ protectedRouter.put('/savingsGoals/:id', asyncHandler(SavingsGoalController.upda
 protectedRouter.delete('/savingsGoals/:id', asyncHandler(SavingsGoalController.deleteSavingsGoal));
 protectedRouter.post('/savingsGoals/:id', asyncHandler(SavingsGoalController.addToSavingsGoal));
 
-// Major Goal routes /// مفيش فرق بين update البروجرس وال update العادي لكن يمكن نحتاجها في الفرونت
+// Major Goals
 protectedRouter.post('/majorGoals', asyncHandler(MajorGoalController.createMajorGoal));
 protectedRouter.get('/majorGoals', asyncHandler(MajorGoalController.getUserMajorGoals));
 protectedRouter.get('/majorGoals/:id', asyncHandler(MajorGoalController.getMajorGoalById));
 protectedRouter.put('/majorGoals/:id', asyncHandler(MajorGoalController.updateMajorGoal));
 protectedRouter.delete('/majorGoals/:id', asyncHandler(MajorGoalController.deleteMajorGoal));
-protectedRouter.patch('/majorGoals/:id/', asyncHandler(MajorGoalController.updateProgress));
+protectedRouter.patch('/majorGoals/:id', asyncHandler(MajorGoalController.updateProgress)); // بدون slash زائدة
 
-
-// Income routes
+// Incomes
 protectedRouter.post('/incomes', asyncHandler(IncomeController.addIncome));
 protectedRouter.get('/incomes', asyncHandler(IncomeController.getUserIncomes));
 protectedRouter.get('/incomes/:year/:month', asyncHandler(IncomeController.getIncomesByDate));
@@ -77,7 +89,7 @@ protectedRouter.get('/incomes/:id', asyncHandler(IncomeController.getIncomeById)
 protectedRouter.put('/incomes/:id', asyncHandler(IncomeController.updateIncome));
 protectedRouter.delete('/incomes/:id', asyncHandler(IncomeController.deleteIncome));
 
-// Minimal installment routes
+// Installments
 protectedRouter.post('/installments', asyncHandler(InstallmentController.addInstallment));
 protectedRouter.get('/installments', asyncHandler(InstallmentController.getUserInstallments));
 protectedRouter.get('/installments/:id', asyncHandler(InstallmentController.getInstallmentById));
@@ -85,13 +97,14 @@ protectedRouter.patch('/installments/:id/pay', asyncHandler(InstallmentControlle
 protectedRouter.put('/installments/:id', asyncHandler(InstallmentController.updateInstallment));
 protectedRouter.delete('/installments/:id', asyncHandler(InstallmentController.deleteInstallment));
 
-// Custom Installment Plan routes
+// Custom Installment Plans
 protectedRouter.post('/custom-installment-plans', asyncHandler(CustomInstallmentPlanController.addPlan));
 protectedRouter.get('/custom-installment-plans', asyncHandler(CustomInstallmentPlanController.getPlans));
 protectedRouter.get('/custom-installment-plans/:id', asyncHandler(CustomInstallmentPlanController.getPlanById));
 protectedRouter.put('/custom-installment-plans/:id', asyncHandler(CustomInstallmentPlanController.updatePlan));
-protectedRouter.delete('/custom-installment-plans3/:id', asyncHandler(CustomInstallmentPlanController.deletePlan));
+protectedRouter.delete('/custom-installment-plans/:id', asyncHandler(CustomInstallmentPlanController.deletePlan));
 
+// Referral system (view users referred by the logged-in user)
+protectedRouter.get('/referrals', asyncHandler(getReferrals));
 
-
-export { router as publicRouter, protectedRouter };
+export { publicRouter, protectedRouter };
