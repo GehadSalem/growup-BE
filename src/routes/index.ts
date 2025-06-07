@@ -13,9 +13,9 @@ import { getCurrency } from '../middlewares/getCurrency';
 import DailyTaskController from '../controller/dailyTask.controller';
 import SavingsGoalController from '../controller/savingsGoal.controller';
 import MajorGoalController from '../controller/majorGoals.controller';
-import { IncomeController } from '../controller/income.controller';
 import { InstallmentController } from '../controller/installment.controller';
 import UserController from '../controller/user.controller';
+import { IncomeController } from '../controller/income.controller';
 const publicRouter = Router();
 
 /* ---------------------- Public Routes ---------------------- */
