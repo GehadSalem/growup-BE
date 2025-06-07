@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES5",                          // Output ES5
     "module": "CommonJS",                    // Still CommonJS for Node.js
-    "outDir": "./dist",
+    "outDir": "./dest",
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
@@ -16,5 +16,5 @@
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "api/index.ts"],
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dest", "test"]
 }
