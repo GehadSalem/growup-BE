@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { authenticate } from '../middlewares/auth.middleware';
 import ExpenseController from '../controller/expense.controller';
 import AuthController from '../controller/auth.controller';
 import HabitController from '../controller/habit.controller';
@@ -16,6 +15,7 @@ import MajorGoalController from '../controller/majorGoals.controller';
 import { InstallmentController } from '../controller/installment.controller';
 import UserController from '../controller/user.controller';
 import { IncomeController } from '../controller/income.controller';
+import { authenticate } from '../middlewares/auth.middleware';
 const publicRouter = Router();
 
 /* ---------------------- Public Routes ---------------------- */
