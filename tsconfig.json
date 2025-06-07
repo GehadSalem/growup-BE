@@ -13,7 +13,13 @@
     "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "allowJs": true,
+  "resolveJsonModule": true,
+  "noEmitOnError": false,
+  "paths": {
+    "*": ["*"]
+  }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "test"]
