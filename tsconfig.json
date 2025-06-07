@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES5",                          // Output ES5
-    "module": "CommonJS",                    // Still CommonJS for Node.js
-    "outDir": "./dest",
-    "rootDir": "./src",
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",                  // <-- عدلنا هنا
+    "rootDir": "./src",                  // <-- الكود الأساسي هنا
     "strict": true,
     "esModuleInterop": true,
     "sourceMap": true,
@@ -15,6 +15,6 @@
     "baseUrl": "./src",
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "api/index.ts"],
-  "exclude": ["node_modules", "dest", "test"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test"]
 }
