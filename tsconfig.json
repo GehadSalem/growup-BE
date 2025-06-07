@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "CommonJS",
-    "outDir": "./dist",                  // <-- عدلنا هنا
-    "rootDir": "./src",                  // <-- الكود الأساسي هنا
+    "outDir": "./dist",
+    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "sourceMap": true,

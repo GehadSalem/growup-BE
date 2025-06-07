@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { publicRouter, protectedRouter } from '../src/routes/index';
-import { AppDataSource } from '../src/dbConfig/data-source';
-import { globalErrorHandling } from '../src/middlewares/error.middleware';
-import { authenticate } from '../src/middlewares/auth.middleware';
+import { publicRouter, protectedRouter } from '../routes/index';
+import { AppDataSource } from '../dbConfig/data-source';
+import { globalErrorHandling } from '../middlewares/error.middleware';
+import { authenticate } from '../middlewares/auth.middleware';
 
 dotenv.config();
 
